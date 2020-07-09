@@ -1,0 +1,9 @@
+POST http://localhost:3001/api/movies
+Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkphbmVja3kiLCJpZCI6IjVlZjRkY2E2MjNkMmYwM2YwMDVjYjdmNyIsImlhdCI6MTU5MzEwNTU5N30.pOWX0pFrOVsvbH9TCDIqv5hJDzwb6lvELRxybEtU5vk
+
+{
+ "title": "Commando",
+  "year": 1980,
+  "review": "Arska on äijä"
+  }
