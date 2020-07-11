@@ -22,7 +22,7 @@ app.use(express.json())
 app.use(express.static('build'))
 
 app.get('/*', (req, res) => {
-  let url = path.join(__dirname, '../build', 'index.html');
+  let url = path.join(__dirname, './build', 'index.html');
   if (!url.startsWith('/app/')) // we're on local windows
     url = url.substring(1);
   res.sendFile(url);
