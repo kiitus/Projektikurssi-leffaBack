@@ -8,7 +8,6 @@ require('dotenv').config()
 loginRouter.post('/', async (request, response) => {
   const body = request.body
 
- console.log(body)
   const user = await User.findOne({ userName: body.username })
   const passwordCorrect = user === null
     ? false
