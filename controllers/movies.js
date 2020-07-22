@@ -64,12 +64,14 @@ moviesRouter.get('/', (request, response) => {
     }
 
     
+    
    return Movie.findOne({ Title: body.Title}).then((movie)=>
     {
      
      body.rating = body.reviews[0].rating
       body.review = body.reviews[0].review
      
+    
 
       const review = new Review ({
         rating: body.rating,
