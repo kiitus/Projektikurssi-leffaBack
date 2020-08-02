@@ -218,7 +218,40 @@ moviesRouter.delete('/:id',(req,res)=>
 
 })
 
-moviesRouter.put("/:id",async(req,res)=>
+moviesRouter.put("/:id",(req,res)=>{
+  const body = req.body
+
+  const token = getTokenFrom(req)
+
+    const decodedToken = jwt.verify(token, process.env.SECRET)
+    if (!token || !decodedToken.id) {
+      return res.status(401).json({ error: 'token missing or invalid' })
+    }
+
+
+
+
+  const review = {
+    rating: body.rating,
+    review: body.review,
+    date: (new Date()).toLocaleDateString(),
+    user: decodedToken.username
+  }
+
+ 
+  Review.findByIdAndUpdate(req.params.id,review, { new: true }).then((chancedReview)=>
+  {
+  return res.status(201).json(chancedReview)
+  }).catch((error)=>
+  {
+    return res.status(401).json({error:error.message})
+  })
+  
+
+})
+
+
+/*moviesRouter.put("/:id",async(req,res)=>
 {
     const body = req.body
 
@@ -239,5 +272,5 @@ moviesRouter.put("/:id",async(req,res)=>
       console.log(error)
   }
 })
-
+*/
 module.exports = moviesRouter
