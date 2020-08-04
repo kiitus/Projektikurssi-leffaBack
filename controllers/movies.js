@@ -76,7 +76,7 @@ moviesRouter.get('/', (request, response) => {
       const review = new Review ({
         rating: body.rating,
         review: body.review,
-        date: (new Date()).toLocaleDateString(),
+        date: (new Date()).toLocaleDateString('en-GB'),
         user: decodedToken.username})
 
        return  review.save().then((saved_review)=>
@@ -234,7 +234,7 @@ moviesRouter.put("/:id",(req,res)=>{
   const review = {
     rating: body.rating,
     review: body.review,
-    date: (new Date()).toLocaleDateString(),
+    date: (new Date()).toLocaleDateString('en-GB'),
     user: decodedToken.username
   }
 
