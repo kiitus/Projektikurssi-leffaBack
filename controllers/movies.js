@@ -62,11 +62,32 @@ moviesRouter.get('/', (request, response) => {
     if (!token || !decodedToken.id) {
       return response.status(401).json({ error: 'token missing or invalid' })
     }
+    
+   
 
-    
-    
-   return Movie.findOne({ Title: body.Title}).then((movie)=>
+   Movie.findOne({ Title: body.Title}).then((movie)=>
     {
+    /*  if(movie !== null)
+      {
+      User.findById(decodedToken.id).then((finded_user)=>
+      {
+        //Tarkistetaan onko arvostelu jo tiedoissa
+        const index = finded_user.movies.findIndex((userMovie)=>
+        {
+      
+         return userMovie.toString() ===movie.id.toString()
+        })
+
+        if(index !== -1)
+        {
+          console.log("tarkistus")
+          return response.status(401).json({error: 'review was created in another browser'}).end();
+      
+        }
+      })
+    }
+  */
+    
      
      body.rating = body.reviews[0].rating
       body.review = body.reviews[0].review
