@@ -29,28 +29,13 @@ moviesRouter.get('/', (request, response) => {
 
     User.findById(id).populate({
       path: 'movies',
-      // Get friends of friends - populate the 'friends' array for every friend
       populate: { path: 'reviews' }
     
     }).then((user) =>
-  {
+    {
       response.json(user)
     })
-    //User.findById(id).populate({path:"movies",populate:{path:"reviews"}}).then((user)=>
-   
-    
-   /* .populate({
-      path: 'friends',
-      // Get friends of friends - populate the 'friends' array for every friend
-      populate: { path: 'friends' }
-  });
-    /*
-    Movie
-      .find({}).populate(`reviews`)   //(`reviews`,{ rating: 1})
-      .then(movies => {
-        response.json(movies)
-      })
-      */
+
   })
   
   moviesRouter.post('/', (request, response) => {
@@ -172,72 +157,7 @@ moviesRouter.get('/', (request, response) => {
     })
   })
 
-moviesRouter.delete('/:id',(req,res)=>
-{
 
-  const body = req.body
-
-
-  const token = getTokenFrom(req)
-
-  const decodedToken = jwt.verify(token, process.env.SECRET)
-
-
-  if (!token || !decodedToken.id) {
-    return res.status(401).json({ error: 'token missing or invalid' })
-  }
-  
-  Movie.findById(req.params.id).then((movie)=>
-  {
-  
-    if(movie === null)
-    {
-     return res.status(401).json({error: 'review to delete doesnt excist'});
-    }
-    
-    if(decodedToken.id.toString()!==movie.user.toString())
-    {
-    return res.status(401).json({error: 'review was created by someone else'});
-    }
-    
-    
-      User.findById({_id:decodedToken.id}).then((user)=>
-      {
-      
-        let filter = user.movies.filter((movie)=>
-        {
-         return movie.toString() !== req.params.id.toString();
-        })
-        user.movies = filter;
-        user.save().then(() =>
-        {
-      
-          Movie.findByIdAndDelete({_id:req.params.id}).then(()=>
-          {
-            res.status(204).end()
-          })
-          
-        })
-      })
-    
-    }).catch((error)=>
-  {
-    return res.status(401).json({error:error.message})
-  })
-  
-
-  /*  try{
-        console.log("Ennen poisoa")
-   await Blog.findByIdAndDelete({_id:req.params.id})
-        res.status(204).end()
-      }
-      catch(error)
-      {
-          console.log(error)
-    }
-    */
-
-})
 
 moviesRouter.put("/:id",(req,res)=>{
   const body = req.body
@@ -272,26 +192,5 @@ moviesRouter.put("/:id",(req,res)=>{
 })
 
 
-/*moviesRouter.put("/:id",async(req,res)=>
-{
-    const body = req.body
 
-    const movie = {
-      title: body.title,
-      year: body.year,
-      poster: body.poster,
-      imdb:body.imdb,
-      rating: body.rating,
-      review: body.rating,
-      date:body.date}
-
-
-  try {
-    const chancedMovie = await Movie.findByIdAndUpdate(req.params.id, movie, { new: true })
-    res.json(chancedMovie)
-  } catch (error) {
-      console.log(error)
-  }
-})
-*/
 module.exports = moviesRouter

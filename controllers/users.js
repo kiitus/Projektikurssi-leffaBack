@@ -3,13 +3,7 @@ const User = require('../models/user')
 const bcrypt = require('bcrypt')
 
 
-usersRouter.get("/",(req,res)=>
-{
-    User.find({}).populate(`movies`).then((users)=>
-    {
-        res.json(users)
-    })
-})
+
 usersRouter.post("/",(req,res)=>
 {
    const body = req.body

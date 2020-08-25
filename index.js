@@ -9,7 +9,8 @@ const usersRouter = require(`./controllers/users`)
 const loginRouter = require(`./controllers/login`)
 require('dotenv').config()
 
-const mongoUrl = 'mongodb+srv://kiitus:m2f69JomE4CdMcSP@cluster0-ppj5g.mongodb.net/Movies?retryWrites=true&w=majority'
+const mongoUrl = process.env.MONGO
+
 mongoose.connect(mongoUrl, {
     useCreateIndex: true,
     useUnifiedTopology:true,
