@@ -56,6 +56,7 @@ const App = () => {
     const loggedUserJSON = window.localStorage.getItem('loggedAppUser')
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON)
+      console.log(user)
       setUser(user)
     reviewService.setToken(user.token)
 
@@ -80,6 +81,7 @@ const logout = ()=>{
   setUser(null)
   reviewService.setToken(null);
   setUsersMovies([])
+  setMovieToReview(null)
 
 }
   const searchFromAPI = (search)=>    //Gets movie data from omdbapi
@@ -106,13 +108,16 @@ const logout = ()=>{
   const makeReview =(review) =>   //Handels review made by review component
   {
    
-    let ownMovieIndex = usersMovies.findIndex((movie)=>{ //Has users already reviewed this movie 
+    let ownMovieIndex = usersMovies.findIndex((movie)=>{ //Has user	already reviewed this movie 
     return movie.Title === review.Title      
     })
     let MovieIndex = movies.findIndex((movie)=>  //Has someone reviewed this movie
     {
       return movie.Title === review.Title
     })
+
+
+
     let reviewIndex = -1;
     if(ownMovieIndex !== -1)  //If user has already reviewed this movie
     {
@@ -144,7 +149,7 @@ const logout = ()=>{
          })
      }
     }
-    if(ownMovieIndex === -1)  // Logged in user hasn't reviewed the movie
+    else if(ownMovieIndex === -1)  // Logged in user hasn't reviewed the movie
     {
       reviewService.create(review).then((newReview)=>
       {
@@ -280,9 +285,11 @@ return(
           <Review movie={movieToReview} getReview={makeReview} />
           </div>}
         </Route>
+
         <Route path="/reviews">
           <ListOfMovies  movies={movies} />
         </Route>
+
         <Route path="/your_reviews">
           {user?                              //Requires logged in to show users movies(reviews)
           <ListOfMovies movies={usersMovies} />
@@ -290,6 +297,7 @@ return(
           <Login getLoginInformation={login}/>
           </div>}
         </Route>
+
         <Route path="/make_review">
           {user?                //requires logged in the make review
            <div ><SearchMovieToReview getSearchedTitle={searchFromAPI}/>
@@ -299,19 +307,23 @@ return(
           <Notification message={errorMessage} />
           <Login getLoginInformation={login}/></div>}
         </Route>
+
         <Route path="/login">       
         <Login getLoginInformation={login}/>
         </Route>
+
        < Route path="/">
        <Information amount={movies.length}/>
         </Route>
-      </Switch>
 
-      <footer style={{clear:'both',marginTop:40,bottom:0,
-    padding:20,backgroundColor:"grey"}}>
+      </Switch>
+    </Router>
+    
+    
+    <footer style={{clear:'both',marginTop:40,bottom:0,
+          padding:20,backgroundColor:"grey"}}>
         <i>Teemu Hallinen, Ohjelmistosuunnittelu täydennyskoulutus SeAMK 2019-2020</i>
       </footer>
-    </Router>
     </div>
    
 )

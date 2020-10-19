@@ -3,9 +3,8 @@ const express = require('express')
 const app = express()
 const cors = require('cors')
 const path = require('path');
-
 const mongoose = require('mongoose')
-const Movie = require(`./models/movie`)
+
 const moviesRouter = require(`./controllers/movies`)
 const usersRouter = require(`./controllers/users`)
 const loginRouter = require(`./controllers/login`)
@@ -32,17 +31,8 @@ app.use('/api/movies', moviesRouter)
 app.use(`/api/login`, loginRouter)
 
 
-
-/*
-const unknownEndpoint = (request, response) => {
-  response.status(404).send({ error: 'unknown endpoint' })
-}
-
-app.use(unknownEndpoint)
-*/
-
 app.get('*', (req,res) =>{
-  console.log(path.join(__dirname+'/build/index.html'))
+
   res.sendFile(path.join(__dirname+'/build/index.html'));
  
 });

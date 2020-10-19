@@ -10,8 +10,7 @@ const Information = ({amount}) => {   //Component for information about the site
             <p>This is an app for reading and writing reviews for movies. You can read
                 reviews without signing in, but to write a review you must make an account for
                 the site. You will see the reviews by cliking the title of the movie</p>
-            <p>There are {amount}
-                movies reviewed in the site</p>
+            <p>There are {amount} movies reviewed in the site</p>
             <p>
                 <b>When you test the site, please write some sensible review</b>
             </p>

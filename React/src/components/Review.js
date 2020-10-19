@@ -4,7 +4,7 @@ import NumericInput from 'react-numeric-input';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 
-const Review = ({movie, getReview}) => {        //Component for making a review
+const Review = ({movie, getReview}) => { //Component for making a review
     const [rating, setRating] = useState(5)
     const [writeReview, setWriteReview] = useState(``)
 
@@ -14,7 +14,7 @@ const Review = ({movie, getReview}) => {        //Component for making a review
         event.preventDefault()
         if (writeReview.length > 3) {
 
-            setButtonDisable(true)  //prevents double click
+            setButtonDisable(true) //prevents double click
 
             // const review ={...movie,rating,review:writeReview}
 
@@ -35,7 +35,7 @@ const Review = ({movie, getReview}) => {        //Component for making a review
             setRating(5)
             setWriteReview("")
 
-            setTimeout(() => {   //Prevent double  click
+            setTimeout(() => { //Prevent double  click
                 setButtonDisable(false)
             }, 1000)
 
@@ -48,6 +48,10 @@ const Review = ({movie, getReview}) => {        //Component for making a review
         marginRight: 110,
         marginLeft: 50
     }
+    const margin = {
+        marginLeft: 50
+    }
+ 
 
     if (movie === null) {
         return null
@@ -55,11 +59,11 @@ const Review = ({movie, getReview}) => {        //Component for making a review
 
         return (
             <div>
+
+                <h2 style={margin}>
+                    {movie.Title} {movie.Year}
+                </h2>
                 <div style={left}>
-                    <h2>
-                        {movie.Title}
-                        {movie.Year}
-                    </h2>
                     <h3>
                         IMDB-rating:{movie.imdbRating}</h3>
                     <p>
@@ -74,7 +78,7 @@ const Review = ({movie, getReview}) => {        //Component for making a review
                         <Form.Row>
                             <Form.Label>Rating</Form.Label>
                             <NumericInput
-                                required="required"
+                                required = "true"
                                 min={0}
                                 max={10}
                                 step={0.1}
@@ -92,7 +96,7 @@ const Review = ({movie, getReview}) => {        //Component for making a review
                                 value={writeReview}
                                 onChange={({target}) => setWriteReview(target.value)}/>
 
-                            <Button variant="primary" type="submit" disabled={buttonDisabled}>
+                            <Button className="float-right"  variant="primary" type="submit" disabled={buttonDisabled}>
                                 Save review
                             </Button>
                         </Form.Row>

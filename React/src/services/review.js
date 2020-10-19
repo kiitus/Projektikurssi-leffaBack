@@ -22,7 +22,7 @@ const create = (newReview)=>{
     const config = {
         headers: { Authorization: token },
       }
-      
+      console.log(config)
       let request = axios.put(`${baseUrl}/${id}`,updatedReview,config)
       return request.then((response)=>
       {
