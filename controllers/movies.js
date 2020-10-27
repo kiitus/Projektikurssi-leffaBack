@@ -4,10 +4,9 @@ const User = require('../models/user')
 const Review = require('../models/review')
 
 const jwt = require('jsonwebtoken')
-const review = require('../models/review')
 
 
-const getTokenFrom = request => {
+const getTokenFrom = request => {   //Handels token
 
   const authorization = request.get('authorization')
   if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
@@ -16,7 +15,7 @@ const getTokenFrom = request => {
   return null
 }
 
-moviesRouter.get('/', (request, response) => {
+moviesRouter.get('/', (request, response) => {    //Gets all movies and those reviews
     Movie
       .find({}).populate(`reviews`)   //(`reviews`,{ rating: 1})
       .then(movies => {
@@ -25,7 +24,7 @@ moviesRouter.get('/', (request, response) => {
   })
 
   
-  moviesRouter.get('/:id', (request, response) => {
+  moviesRouter.get('/:id', (request, response) => {  //Gets movies reviewed by specific user
     let id = request.params.id;
 
     User.findById(id).populate({
@@ -39,10 +38,10 @@ moviesRouter.get('/', (request, response) => {
 
   })
   
-  moviesRouter.post('/', (request, response) => {
+  moviesRouter.post('/', (request, response) => {  //New review (and movie if not exist)
     const body = request.body
   
-    const token = getTokenFrom(request)
+    const token = getTokenFrom(request)  //Checks token
 
     const decodedToken = jwt.verify(token, process.env.SECRET)
     if (!token || !decodedToken.id) {
@@ -51,36 +50,15 @@ moviesRouter.get('/', (request, response) => {
     
    
 
-   Movie.findOne({ Title: body.Title}).then((movie)=>
+   Movie.findOne({ Title: body.Title}).then((movie)=> //Find movie to review
     {
-    /*  if(movie !== null)
-      {
-      User.findById(decodedToken.id).then((finded_user)=>
-      {
-        //Tarkistetaan onko arvostelu jo tiedoissa
-        const index = finded_user.movies.findIndex((userMovie)=>
-        {
-      
-         return userMovie.toString() ===movie.id.toString()
-        })
-
-        if(index !== -1)
-        {
-          console.log("tarkistus")
-          return response.status(401).json({error: 'review was created in another browser'}).end();
-      
-        }
-      })
-    }
-  */
-    
-     
+  
      body.rating = body.reviews[0].rating
       body.review = body.reviews[0].review
      
     
 
-      const review = new Review ({
+      const review = new Review ({    //New review
         rating: body.rating,
         review: body.review,
         date: (new Date()).toLocaleDateString('en-GB'),
@@ -88,7 +66,7 @@ moviesRouter.get('/', (request, response) => {
 
        return  review.save().then((saved_review)=>
         {
-          if(movie===null)
+          if(movie===null)   //New movie if doesn't exist
           {
             
             let new_movie = new Movie({
@@ -98,12 +76,12 @@ moviesRouter.get('/', (request, response) => {
               imdb:body.imdb,
               review:[]})
               
-              new_movie.reviews.push(saved_review.id)
+              new_movie.reviews.push(saved_review.id)   //Review to movie
               
               new_movie.save().then((saved_movie)=>
               {
                 console.log(saved_movie.imdb)
-                User.findById(decodedToken.id).then((finded_user)=>
+                User.findById(decodedToken.id).then((finded_user)=>   //Movie to user
                 {
                   finded_user.movies.push(saved_movie.id)
                   finded_user.save().then(()=>
@@ -115,11 +93,11 @@ moviesRouter.get('/', (request, response) => {
           
           }
           else
-          {
-            movie.reviews.push(saved_review.id)
+          {                                 //Movie already exist
+            movie.reviews.push(saved_review.id)    //review to movie
             movie.save().then((saved_movie)=>
             {
-              User.findById(decodedToken.id).then((finded_user)=>
+              User.findById(decodedToken.id).then((finded_user)=>     //Does movie already in user
               {
                 //Tarkistetaan onko arvostelu jo tiedoissa
                 const index = finded_user.movies.findIndex((movie)=>
@@ -129,7 +107,7 @@ moviesRouter.get('/', (request, response) => {
                 })
                 
               
-                if(index === -1)
+                if(index === -1)   // Movie wasn't in user
                 {
                   finded_user.movies.push(saved_movie.id)
                   finded_user.save().then(()=>
@@ -138,7 +116,7 @@ moviesRouter.get('/', (request, response) => {
                     return response.status(201).json(saved_review)
                   })
                 }
-                else
+                else                        //Movie was in user
                 {
                   console.log("Leffaa ei käyttäjän taulukkoon, oli jo")
 
@@ -160,10 +138,10 @@ moviesRouter.get('/', (request, response) => {
 
 
 
-moviesRouter.put("/:id",(req,res)=>{
+moviesRouter.put("/:id",(req,res)=>{      //Update existin review
   const body = req.body
 
-  const token = getTokenFrom(req)
+  const token = getTokenFrom(req)     //Checks token
 
     const decodedToken = jwt.verify(token, process.env.SECRET)
     if (!token || !decodedToken.id) {
@@ -172,7 +150,7 @@ moviesRouter.put("/:id",(req,res)=>{
 
 
 
-//testi
+        //Update information to review
   const review = {
     rating: body.rating,
     review: body.review,
@@ -180,7 +158,7 @@ moviesRouter.put("/:id",(req,res)=>{
     user: decodedToken.username
   }
 
- 
+        //Updates review
   Review.findByIdAndUpdate(req.params.id,review, { new: true }).then((chancedReview)=>
   {
   return res.status(201).json(chancedReview)

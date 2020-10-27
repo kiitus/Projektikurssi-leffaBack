@@ -13,13 +13,6 @@ const getUsersMovies = (id) =>
 }
 
 
-let token = null
-
-const setToken = newToken => {
-  token = `bearer ${newToken}`
-}
-
-
 const searchMovie = (title) =>
 {
   const address = `https://www.omdbapi.com/?t=${title}&apikey=d20392f7`
@@ -29,13 +22,4 @@ const searchMovie = (title) =>
   })
 }
 
-const create = (newReview)=>{
-  const config = {
-    headers: { Authorization: token },
-  }
-
-  const request = axios.post(baseUrl,newReview,config)
-  return request.then(response => response.data)
-}
-
-export default { getAll, getUsersMovies, setToken, searchMovie,create}
+export default { getAll, getUsersMovies, searchMovie}

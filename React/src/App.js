@@ -195,6 +195,7 @@ const logout = ()=>{
   
     loginService.login({username,password}).then((user)=>{
     
+
       window.localStorage.setItem(
         'loggedAppUser', JSON.stringify(user)
       ) 
@@ -225,7 +226,7 @@ const getSignUpIformation = (username,password,password2)=>{  //New user registe
 
      registerService.register({userName:username,password}).then((user)=>
     {
-      login(user.userName,password)  
+     login(user.userName,password)  
     
     }).catch((error)=>
     {

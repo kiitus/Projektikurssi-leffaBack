@@ -5,15 +5,15 @@ const User = require('../models/user')
 require('dotenv').config()
 
 
-loginRouter.post('/', (req, res) => {
+loginRouter.post('/', (req, res) => {   //log in
   const body = req.body
 
 
-  User.findOne({ userName: body.username }).then((user) => {
+  User.findOne({ userName: body.username }).then((user) => {   //finds user from database
     if (user !== null) {
-      bcrypt.compare(body.password,user.passwordHash).then((passCorrect)=>
+      bcrypt.compare(body.password,user.passwordHash).then((passCorrect)=> //compare password
       {
-        if(passCorrect)
+        if(passCorrect)  //Password correct
         {
           const userForToken = {
             username: user.userName,
