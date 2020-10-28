@@ -8,6 +8,8 @@ const mongoose = require('mongoose')
 const moviesRouter = require(`./controllers/movies`)
 const usersRouter = require(`./controllers/users`)
 const loginRouter = require(`./controllers/login`)
+const reviewsRouter = require('./controllers/reviews')
+
 require('dotenv').config()
 
 const mongoUrl = process.env.MONGO
@@ -29,6 +31,7 @@ app.use(express.static('build'))
 app.use('/api/users', usersRouter)
 app.use('/api/movies', moviesRouter)
 app.use(`/api/login`, loginRouter)
+app.use('/api/reviews',reviewsRouter)
 
 
 app.get('*', (req,res) =>{

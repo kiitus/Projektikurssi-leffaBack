@@ -1,6 +1,6 @@
 
 import axios from 'axios'
-const baseUrl = '/api/movies'
+const baseUrl = '/api/reviews'
 
 let token = null
 
