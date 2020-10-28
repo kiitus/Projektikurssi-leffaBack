@@ -1,4 +1,4 @@
-const moviesRouter = require('express').Router()
+const reviewsRouter = require('express').Router()
 const Movie = require('../models/movie')
 const User = require('../models/user')
 const Review = require('../models/review')
