@@ -78,7 +78,7 @@ const Review = ({movie, getReview}) => { //Component for making a review
                         <Form.Row>
                             <Form.Label>Rating</Form.Label>
                             <NumericInput
-                                required = "true"
+                                required = {true}
                                 min={0}
                                 max={10}
                                 step={0.1}

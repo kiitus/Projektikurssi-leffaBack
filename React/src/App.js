@@ -43,7 +43,7 @@ const App = () => {
   useEffect(() => {     //Gets all reviews from server when user entters in the site
     movieService.getAll().then(movies =>
       {
-
+        console.log("Haettiin kaikki leffat")
        movies.sort(sortByTitle); 
       setMovies( movies )
     
