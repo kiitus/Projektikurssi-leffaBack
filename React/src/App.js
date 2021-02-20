@@ -43,7 +43,7 @@ const App = () => {
   useEffect(() => {     //Gets all reviews from server when user entters in the site
     movieService.getAll().then(movies =>
       {
-        console.log("Haettiin kaikki leffat")
+    
        movies.sort(sortByTitle); 
       setMovies( movies )
     
@@ -59,6 +59,7 @@ const App = () => {
       console.log(user)
       setUser(user)
     reviewService.setToken(user.token)
+    movieService.setToken(user.token)
 
     if(user)  //Gets logged in users reviewed movies
     {
@@ -69,6 +70,16 @@ const App = () => {
         data.movies.sort(sortByTitle)
         setUsersMovies(data.movies)
         }
+      }).catch((error)=>
+      {
+        setErrorMessage(`${error.response.data.message}`)
+        setTimeout(()=>
+        {
+          setErrorMessage(null)
+        
+        },6000)
+
+        logout()
       })
     }
     }
@@ -80,6 +91,7 @@ const logout = ()=>{
   window.localStorage.removeItem('loggedAppUser')
   setUser(null)
   reviewService.setToken(null);
+  movieService.setToken(null)
   setUsersMovies([])
   setMovieToReview(null)
 
@@ -144,9 +156,15 @@ const logout = ()=>{
         setMovies(tmpMovies)
 
        }).catch((error)=>
-        {
-        console.log(error.response.data)
-         })
+       {
+         setErrorMessage(`${error.response.data.message}`)
+         setTimeout(()=>
+         {
+           setErrorMessage(null)
+         },6000)
+
+         logout()
+       })
      }
     }
     else if(ownMovieIndex === -1)  // Logged in user hasn't reviewed the movie
@@ -181,7 +199,18 @@ const logout = ()=>{
          
          ownMovieArray.sort(sortByTitle)
         setUsersMovies(ownMovieArray)
+        }).catch((error)=>
+        {
+          setErrorMessage(`${error.response.data.message}`)
+          setTimeout(()=>
+          {
+            setErrorMessage(null)
+          },6000)
+
+          logout()
         })
+
+        
        
       }
        setMovieToReview(null)
@@ -200,6 +229,7 @@ const logout = ()=>{
         'loggedAppUser', JSON.stringify(user)
       ) 
       reviewService.setToken(user.token)
+      movieService.setToken(user.token)
     
       movieService.getUsersMovies(user.id).then((data)=> //Gets logged in users reviewed movies 
       {
@@ -274,12 +304,11 @@ return(
      // : <Link style={padding} to="/login">login</Link>
     }
       </div>
-
+      <Notification message={errorMessage}/>
       <Switch>
         <Route path="/sign_up">
           {!user?        //Notice ! mark, if not logged in show sign up form, when signs in show make review
           <div>
-          <Notification message={errorMessage}/>
           <SignUp getSignUpIformation={getSignUpIformation} />
           </div>
           :<div><SearchMovieToReview getSearchedTitle={searchFromAPI}/> 
@@ -294,7 +323,7 @@ return(
         <Route path="/your_reviews">
           {user?                              //Requires logged in to show users movies(reviews)
           <ListOfMovies movies={usersMovies} />
-          :<div><Notification message={errorMessage}/>
+          :<div>
           <Login getLoginInformation={login}/>
           </div>}
         </Route>
@@ -305,7 +334,6 @@ return(
         <Review movie={movieToReview} getReview={makeReview} />
         </div>
         :<div>
-          <Notification message={errorMessage} />
           <Login getLoginInformation={login}/></div>}
         </Route>
 

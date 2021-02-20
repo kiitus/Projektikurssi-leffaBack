@@ -15,9 +15,12 @@ loginRouter.post('/', (req, res) => {   //log in
       {
         if(passCorrect)  //Password correct
         {
+         
+          let expire = Date.now() + (1000*60*15)
           const userForToken = {
             username: user.userName,
             id: user._id,
+            expire
           }
         
           const token = jwt.sign(userForToken, process.env.SECRET)

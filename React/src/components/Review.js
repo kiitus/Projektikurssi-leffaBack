@@ -1,11 +1,10 @@
 import React, {useState} from 'react'
-import NumericInput from 'react-numeric-input';
 
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 
 const Review = ({movie, getReview}) => { //Component for making a review
-    const [rating, setRating] = useState(5)
+    const [rating, setRating] = useState(5.0)
     const [writeReview, setWriteReview] = useState(``)
 
     const [buttonDisabled, setButtonDisable] = useState(false)
@@ -77,14 +76,8 @@ const Review = ({movie, getReview}) => { //Component for making a review
                     <Form.Group controlId="reviewTextarea">
                         <Form.Row>
                             <Form.Label>Rating</Form.Label>
-                            <NumericInput
-                                required = {true}
-                                min={0}
-                                max={10}
-                                step={0.1}
-                                value={rating}
-                                name="rating"
-                                onChange={setRating}/>
+                          <input type="number" min="0" max="10" value={rating} step="0.1"
+                           onChange={({target})=>{setRating(target.value)}} required></input>
                         </Form.Row>
                         <Form.Row>
 

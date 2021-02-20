@@ -26,6 +26,13 @@ const getTokenFrom = request => {   //Handels token
       return response.status(401).json({ error: 'token missing or invalid' })
     }
     
+    //If you want that your session to expire
+    /*
+    if(decodedToken.expire < Date.now())
+    {
+      return response.status(401).json({message:"Your JWT was expired"})
+    }
+    */ 
    
 
    Movie.findOne({ Title: body.Title}).then((movie)=> //Find movie to review
@@ -125,6 +132,15 @@ reviewsRouter.put("/:id",(req,res)=>{      //Update existin review
     if (!token || !decodedToken.id) {
       return res.status(401).json({ error: 'token missing or invalid' })
     }
+
+    //If you want your session to expire
+    /* 
+    if(decodedToken.expire < Date.now())
+    {
+      return res.status(401).json({message:"Your JWT was expired"})
+    }
+    */
+   
 
 
 
