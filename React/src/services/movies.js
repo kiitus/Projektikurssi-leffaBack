@@ -25,7 +25,7 @@ const getUsersMovies = (id) =>
 
 const searchMovie = (title) =>
 {
-  const address = `https://www.omdbapi.com/?t=${title}&apikey=d20392f7`
+  const address = `https://www.omdbapi.com/?t=${title}&apikey=${process.env.REACT_APP_API_KEY}`
   return axios.get(address).then((response) =>
   {
    return response

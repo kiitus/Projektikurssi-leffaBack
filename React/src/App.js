@@ -41,6 +41,8 @@ const App = () => {
   })
 
   useEffect(() => {     //Gets all reviews from server when user entters in the site
+    
+   
     movieService.getAll().then(movies =>
       {
     
@@ -99,7 +101,6 @@ const logout = ()=>{
   const searchFromAPI = (search)=>    //Gets movie data from omdbapi
   {
   //  event.preventDefault()
-    
     movieService.searchMovie(search).then((response)=>
     {
       
