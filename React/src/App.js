@@ -343,7 +343,7 @@ return(
         </Route>
 
        < Route path="/">
-       <Information amount={movies.length}/>
+       <Information movies={movies}/>
         </Route>
 
       </Switch>

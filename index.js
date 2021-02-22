@@ -27,7 +27,6 @@ app.use(express.static('build'))
 
 
 
-
 app.use('/api/users', usersRouter)
 app.use('/api/movies', moviesRouter)
 app.use(`/api/login`, loginRouter)
